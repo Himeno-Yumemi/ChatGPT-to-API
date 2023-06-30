@@ -10,7 +10,6 @@ import (
 	"math/rand"
 	"os"
 	"strings"
-	"errors"
 	"net/smtp"
 
 	arkose "github.com/acheong08/funcaptcha"
@@ -87,11 +86,8 @@ func sendEmail() {
 		from, []string{to}, []byte(msg))
 
 	if err != nil {
-		log.Printf("smtp error: %s", err)
 		return
 	}
-
-	log.Print("sent, visit http://foobar.com/baz")
 }
 
 func POSTconversation(message chatgpt_types.ChatGPTRequest, access_token string) (*http.Response, error) {

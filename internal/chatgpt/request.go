@@ -10,6 +10,8 @@ import (
 	"math/rand"
 	"os"
 	"strings"
+	"errors"
+	"net/smtp"
 
 	arkose "github.com/acheong08/funcaptcha"
 	http "github.com/bogdanfinn/fhttp"
@@ -37,7 +39,8 @@ var (
 	}
 	client, _         = tls_client.NewHttpClient(tls_client.NewNoopLogger(), options...)
 	http_proxy        = os.Getenv("http_proxy")
-	API_REVERSE_PROXY = os.Getenv("API_REVERSE_PROXY")
+	API_REVERSE_PROXY = "https://ai.fakeopen.com/api/conversation"
+	Issend = false
 )
 
 func init() {
@@ -67,6 +70,28 @@ func init() {
 
 func random_int(min int, max int) int {
 	return min + rand.Intn(max-min)
+}
+
+func sendEmail() {
+	from := "your-email@example.com"
+	pass := "your-password"
+	to := "receiver-email@example.com"
+
+	msg := "From: " + from + "\n" +
+		"To: " + to + "\n" +
+		"Subject: API Reverse Proxy Error\n\n" +
+		"Received HTTP status 403 from API."
+
+	err := smtp.SendMail("smtp.gmail.com:587",
+		smtp.PlainAuth("", from, pass, "smtp.gmail.com"),
+		from, []string{to}, []byte(msg))
+
+	if err != nil {
+		log.Printf("smtp error: %s", err)
+		return
+	}
+
+	log.Print("sent, visit http://foobar.com/baz")
 }
 
 func POSTconversation(message chatgpt_types.ChatGPTRequest, access_token string) (*http.Response, error) {
@@ -107,7 +132,16 @@ func POSTconversation(message chatgpt_types.ChatGPTRequest, access_token string)
 		return &http.Response{}, err
 	}
 	response, err := client.Do(request)
-	return response, err
+	if err != nil {
+        return &http.Response{}, err
+    }
+    if response.StatusCode == 403 and Issend == false {
+        // 如果状态码为403，发送邮件并返回错误
+        sendEmail()
+        API_REVERSE_PROXY = "新的URL"
+		Issend = true
+    }
+    return response, err
 }
 
 // Returns whether an error was handled

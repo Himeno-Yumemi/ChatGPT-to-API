@@ -135,7 +135,7 @@ func POSTconversation(message chatgpt_types.ChatGPTRequest, access_token string)
 	if err != nil {
         return &http.Response{}, err
     }
-    if response.StatusCode == 403 and Issend == false {
+    if response.StatusCode == 403 && !Issend {
         // 如果状态码为403，发送邮件并返回错误
         sendEmail()
         API_REVERSE_PROXY = "新的URL"

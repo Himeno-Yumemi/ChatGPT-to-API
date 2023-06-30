@@ -7,3 +7,5 @@ tools/authenticator/access_tokens.txt
 access_tokens.json
 freechatgpt
 chatgpttoapi
+tools/authenticator/.proxies.txt.swp
+.env

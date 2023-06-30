@@ -1,6 +1,9 @@
 # ChatGPT-to-API
 Create a fake API using ChatGPT's website
 
+> ## IMPORTANT
+> You will not get free support for this repository. This was made for my own personal use and documentation will continue to be limited as I don't really need documentation. You will find more detailed documentation in the Chinese docs by a contributor.
+
 **API endpoint: http://127.0.0.1:8080/v1/chat/completions.**
 
 [中文文档（Chinese Docs）](README_CN.md)
@@ -53,6 +56,7 @@ echo "$START$TOKENS$END" > access_tokens.json
   - `http_proxy` - SOCKS5 or HTTP proxy. `socks5://HOST:PORT`
   - `SERVER_HOST` - Set to 127.0.0.1 by default
   - `SERVER_PORT` - Set to 8080 by default
+  - `OPENAI_EMAIL` and `OPENAI_PASSWORD` - It will automatically refresh your PUID if set (requires Plus account)
 
 ### Files (Optional)
   - `access_tokens.json` - A JSON array of access tokens for cycling (Alternatively, send a PATCH request to the [correct endpoint](https://github.com/acheong08/ChatGPT-to-API/blob/master/docs/admin.md))
